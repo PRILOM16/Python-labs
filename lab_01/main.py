@@ -61,9 +61,9 @@ def main():
     print("\n" + "=" * 40)
 
     for idx, cost in enumerate(orders, start=1):
-         discount, final_discount = calculate_discount(cost)
+         discount, final_cost  = calculate_discount(cost)
          if discount > 0:
-              print(f"Заказ №{idx}: {cost:.2f} руб. -> Скидка: {discount:.2f} руб. -> К оплате: {final_discount:.2f} руб.")
+              print(f"Заказ №{idx}: {cost:.2f} руб. -> Скидка: {discount:.2f} руб. -> К оплате: {final_cost :.2f} руб.")
          else:
             print(f"Заказ  №{idx}:  {cost:.2f} руб. -> Без скидки")
     print("\n" + "=" * 40)
