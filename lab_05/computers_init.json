@@ -1,0 +1,56 @@
+[
+  {
+    "type": "desktop",
+    "name": "Office-Base",
+    "cpu": "Intel Core i3",
+    "ram": 8,
+    "storage": "512GB SSD",
+    "price": 35000,
+    "form_factor": "Micro-ATX"
+  },
+  {
+    "type": "desktop",
+    "name": "Pro-Gaming",
+    "cpu": "Intel Core i5",
+    "ram": 32,
+    "storage": "2TB SSD",
+    "price": 120000,
+    "form_factor": "ATX"
+  },
+  {
+    "type": "desktop",
+    "name": "Workstation",
+    "cpu": "AMD Ryzen 9",
+    "ram": 64,
+    "storage": "4TB NVMe",
+    "price": 210000,
+    "form_factor": "E-ATX"
+  },
+  {
+    "type": "laptop",
+    "name": "ThinkBook",
+    "cpu": "AMD Ryzen 5",
+    "ram": 16,
+    "storage": "512GB SSD",
+    "price": 65000,
+    "screen_size": 14.0
+  },
+  {
+    "type": "laptop",
+    "name": "Legion Pro",
+    "cpu": "Intel Core i7",
+    "ram": 32,
+    "storage": "1TB SSD",
+    "price": 150000,
+    "screen_size": 16.0
+  },
+  {
+    "type": "laptop",
+    "name": "Air-Light",
+    "cpu": "Intel Core i3",
+    "ram": 8,
+    "storage": "256GB SSD",
+    "price": 42000,
+    "screen_size": 13.3
+  }
+]

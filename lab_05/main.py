@@ -1,34 +1,40 @@
-import sys
-from generators import ComputerIterator, computer_type_generator
-from models import DesktopComputer, Laptop
+from generators import computer_type_generator
+from models import DesktopComputer, Laptop, Computer
 import operations
+import os
+import json
 
 
 def get_initial_data():
-    return [
-        DesktopComputer("Office-Base", "Intel Core i3", 8, "512GB SSD", 35000, "Micro-ATX"),
-        DesktopComputer("Pro-Gaming", "Intel Core i5", 32, "2TB SSD", 120000, "ATX"),
-        DesktopComputer("Workstation", "AMD Ryzen 9", 64, "4TB NVMe", 210000, "E-ATX"),
-        Laptop("ThinkBook", "AMD Ryzen 5", 16, "512GB SSD", 65000, 14.0),
-        Laptop("Legion Pro", "Intel Core i7", 32, "1TB SSD", 150000, 16.0),
-        Laptop("Air-Light", "Intel Core i3", 8, "256GB SSD", 42000, 13.3),
-    ]
+    """Загружает список компьютеров из файла computers_init.json в текущей папке."""
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    json_path = os.path.join(base_dir, "computers_init.json")
+
+    try:
+        with open(json_path, "r", encoding="utf-8") as file:
+            raw_data = json.load(file)
+            # Преобразуем словари из JSON в объекты классов
+            return [Computer.from_dict(item) for item in raw_data]
+    except FileNotFoundError:
+        print(f"Внимание: Файл '{json_path}' не найден. Каталог будет пуст.")
+        return []
+    except json.JSONDecodeError:
+        print(f"Внимание: Ошибка чтения JSON в файле '{json_path}'. Каталог будет пуст.")
+        return []
 
 
 def main():
     computers = get_initial_data()
 
     while True:
-        print("\n===== ЛАБОРАТОРНАЯ 5: КОМПЬЮТЕРЫ=====")
+        print("\n===== ЛАБОРАТОРНАЯ 5: КОМПЬЮТЕРЫ =====")
         print("1. Показать все компьютеры")
         print("2. Получить список названий")
         print("3. Отфильтровать по объему RAM")
         print("4. Отсортировать по цене")
         print("5. Найти самый дорогой компьютер")
         print("6. Проверить наличие ПК с заданным RAM")
-        print("7. Запустить генератор ноутбуков")
-        print("8. Демонстрация собственного итератора)")
-        print("9. Сравнение памяти: список vs генератор)")
+        print("7. Запустить генераторы по типам устройств")
         print("0. Выход")
 
         choice = input("Выберите пункт: ").strip()
@@ -76,36 +82,15 @@ def main():
                     print("Ошибка: введите целое число.")
 
             case "7":
-                print("\n--- Запуск генератора (только ноутбуки) ---")
+                print("\n--- Генератор стационарных ПК (DesktopComputer) ---")
+                desktop_gen = computer_type_generator(computers, DesktopComputer)
+                for item in desktop_gen:
+                    print(item.name)
+
+                print("\n--- Генератор ноутбуков (Laptop) ---")
                 laptop_gen = computer_type_generator(computers, Laptop)
-
-                try:
-                    first = next(laptop_gen)
-                    print(f"Первый полученный элемент через next(): {first.name}")
-                except StopIteration:
-                    print("Ноутбуки не найдены.")
-
-                print("\nОстальные элементы генератора через for:")
                 for item in laptop_gen:
-                    print(item)
-
-            case "8":
-                print("\n--- Работа собственного итератора ---")
-                iterator = ComputerIterator(computers)
-                print(f"Первый элемент: {next(iterator).name}")
-                print(f"Второй элемент: {next(iterator).name}")
-
-                print("\nПроход по оставшимся элементам:")
-                for comp in iterator:
-                    print(f"-> {comp.name}")
-
-            case "9":
-                list_data = [comp.price for comp in computers * 1000]
-                gen_data = (comp.price for comp in computers * 1000)
-
-                print("\n--- Сравнение потребления памяти (sys.getsizeof) ---")
-                print(f"Размер обычного списка в памяти: {sys.getsizeof(list_data)} байт")
-                print(f"Размер генераторного выражения:    {sys.getsizeof(gen_data)} байт")
+                    print(item.name)
 
             case "0":
                 print("Выход из программы.")
