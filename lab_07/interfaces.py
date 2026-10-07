@@ -1,5 +1,4 @@
 from typing import Protocol, List, Optional
-from models import Patient, Doctor, Appointment
 
 class Repository(Protocol):
     """Интерфейс для работы с хранилищем (общий для любых данных)."""

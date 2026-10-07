@@ -25,5 +25,5 @@ class Appointment:
     id: int
     patient: Patient
     doctor: Doctor
-    duration: int  # в минутах
+    duration: int  
     status: Status = Status.PLANNED

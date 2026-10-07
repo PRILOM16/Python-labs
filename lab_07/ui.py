@@ -5,13 +5,6 @@ from exceptions import EntityNotFoundError
 class ConsoleUI:
     def __init__(self, service: ClinicService):
         self.service = service
-        self.test_patient = Patient(1, "Иванов И.И.", "Простуда")
-        self.test_doctor = Doctor(1, "Петров П.П.", "Терапевт")
-        self._preload()
-
-    def _preload(self):
-        self.service.add_patient(self.test_patient)
-        self.service.add_appointment(Appointment(1, self.test_patient, self.test_doctor, 30))
 
     def run(self):
         while True:
@@ -30,8 +23,27 @@ class ConsoleUI:
                 if choice == "1":
                     a_id = int(input("ID приема: "))
                     dur = int(input("Длительность (мин): "))
-                    self.service.add_appointment(Appointment(a_id, self.test_patient, self.test_doctor, dur))
-                    print("Прием добавлен.")
+                    
+                    # Ввод данных пациента
+                    print("--- Данные пациента ---")
+                    p_id = int(input("ID пациента: "))
+                    p_name = input("ФИО пациента: ")
+                    p_reason = input("Причина обращения (диагноз): ")
+                    patient = Patient(p_id, p_name, p_reason)
+                    
+                    # Ввод данных врача
+                    print("--- Данные врача ---")
+                    d_id = int(input("ID врача: "))
+                    d_name = input("ФИО врача: ")
+                    d_spec = input("Специализация врача: ")
+                    doctor = Doctor(d_id, d_name, d_spec)
+                    
+                    # Добавляем пациента в сервис (как было в _preload)
+                    self.service.add_patient(patient)
+                    
+                    # Создаем и добавляем прием
+                    self.service.add_appointment(Appointment(a_id, patient, doctor, dur))
+                    print("Прием успешно добавлен.")
 
                 elif choice == "2":
                     a_id = int(input("ID приема: "))
@@ -48,7 +60,8 @@ class ConsoleUI:
                         print(f"[{a.id}] {a.patient.name} -> {a.doctor.name} ({a.status.value})")
 
                 elif choice == "5":
-                    doc_id = int(input("ID врача (тестовый = 1): "))
+                    # Убрана подсказка про тестового врача
+                    doc_id = int(input("ID врача: "))
                     print("Количество приемов:", self.service.count_doctor_appointments(doc_id))
 
                 elif choice == "6":
@@ -63,4 +76,5 @@ class ConsoleUI:
             except EntityNotFoundError as e:
                 print(f"[ОШИБКА ДАННЫХ]: {e}")
             except ValueError as e:
+                # Отлавливает неверный формат ввода (например, буквы вместо int)
                 print(f"[ОШИБКА ВВОДА]: {e}")
